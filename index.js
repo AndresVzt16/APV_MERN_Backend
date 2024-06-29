@@ -1,4 +1,4 @@
-    import express from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import veterinarioRoutes from './routes/veterinarioRoutes.js'
 import pacienteRoutes from './routes/pacienteRoutes.js'
