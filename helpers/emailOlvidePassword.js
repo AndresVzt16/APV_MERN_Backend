@@ -11,6 +11,7 @@ const emailOlvidePassword = async(datos) => {
       });
       const{email, nombre, token} = datos
 
+      
       //enviar email
 
       const info = await transport.sendMail({
