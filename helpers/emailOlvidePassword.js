@@ -1,32 +1,33 @@
-import nodemailer from 'nodemailer';
+import formData from "form-data";
+import Mailgun from "mailgun.js";
 
-const emailOlvidePassword = async(datos) => {
-    const transport = nodemailer.createTransport({
-        host:process.env.EMAIL_HOST,
-        port:process.env.EMAIL_PORT ,
-        auth: {
-          user:process.env.EMAIL_USER,
-          pass:process.env.EMAIL_PASS
-        }
-      });
-      const{email, nombre, token} = datos
+const emailOlvidePassword = async (datos) => {
+  try {
+    // Inicializar Mailgun con formData
+    const mailgun = new Mailgun(formData);
+    const mg = mailgun.client({
+      username: "api",
+      key: process.env.MAILGUN_API_KEY, // Clave API
+    });
 
-      //Testear el transporte
-      //enviar email
+    // Configurar datos para el correo
+    const data = {
+      from: "Mailgun Sandbox <postmaster@fullstack.codeinfinity.tech>", // Dirección del remitente
+      to: datos.email, // Dirección del destinatario
+      subject: "Hello",
+      template: "sistema de inventario uce", // Nombre exacto de la plantilla
+      "h:X-Mailgun-Variables": JSON.stringify({
+        Name: datos.nombre,
+        test: "test",
+      }), // Variables para la plantilla
+    };
 
-      const info = await transport.sendMail({
-        from:'PetsLife',
-        to:email,
-        subject:'Cambiar contraseña',
-        text:"PetsLife",
-        html:`<h2>Hola ${nombre.split(' ')[0]}</h2>
-        <p>Has solicitado restablecer la contraseña en tu cuenta, para realizar el cambio ingresa al siguiente enlace:
-        <a href="${process.env.FRONTEND_URL}/olvide-password/${token}">Restablecer Contraseña</a></p>
+    // Enviar el correo
+    const result = await mg.messages.create(process.env.MAILGUN_DOMAIN, data);
+    console.log("Correo enviado:", result);
+  } catch (error) {
+    console.error("Error enviando correo:", error);
+  }
+};
 
-        <p>Si tu no realizaste esta solicitud puedes ignorar este mensaje.</p>
-        `
-      })
-  
-}
-
-export default emailOlvidePassword
+export default emailOlvidePassword;

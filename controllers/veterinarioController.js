@@ -96,8 +96,10 @@ const autenticar = async(req, res) => {
 const olvidePassword = async(req, res) => {
     //verificar si email existe
     const{email} = req.body
+    console.log(email)
    
     const emailComprobar = await Veterinario.findOne({email});
+    console.log(emailComprobar)
     if(!emailComprobar){
         const e = new Error('No se pudo encontrar el email')
         return res.status(403).json({msg:e.message})
