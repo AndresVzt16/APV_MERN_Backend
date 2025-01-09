@@ -19,6 +19,7 @@ const emailOlvidePassword = async (datos) => {
       "h:X-Mailgun-Variables": JSON.stringify({
         Name: datos.nombre,
         test: "test",
+        link: `${process.env.FRONTEND_URL}/olvide-password/${datos.token}`,
       }), // Variables para la plantilla
     };
 
