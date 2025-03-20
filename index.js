@@ -33,6 +33,7 @@ const corsOptions = {
 //indicar el uso de CORS
 app.use(cors(corsOptions))
 
+
 //Routing
 
 app.use('/api/veterinarios', veterinarioRoutes)
